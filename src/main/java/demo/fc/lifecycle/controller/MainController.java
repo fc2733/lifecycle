@@ -25,7 +25,7 @@ public class MainController {
     @GetMapping
     public Student getInfo() {
         if (!redisTemplate.hasKey("l1")) {
-            redisTemplate.opsForList().rightPushAll("l1", "1.把冰箱门儿打开。", "2.把大象装进去。", "3.把冰箱门儿关上。");
+            redisTemplate.opsForList().rightPushAll("l1", "<1>Open the fridge door.", "<2>Put the elephant in.", "<3>Close the fridge door.");
         } else {
             redisTemplate.opsForList().leftPop("l1");
         }
