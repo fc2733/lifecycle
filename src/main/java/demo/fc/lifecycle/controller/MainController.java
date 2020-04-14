@@ -1,6 +1,7 @@
 package demo.fc.lifecycle.controller;
 
 import demo.fc.lifecycle.entity.Student;
+import demo.fc.lifecycle.service.StudentService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,12 @@ import java.util.List;
 public class MainController {
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final StudentService studentService;
 
-    public MainController(RedisTemplate<String, String> redisTemplate) {
+    public MainController(RedisTemplate<String, String> redisTemplate,
+                          StudentService studentService) {
         this.redisTemplate = redisTemplate;
+        this.studentService = studentService;
     }
 
     @GetMapping
@@ -34,10 +38,10 @@ public class MainController {
         for (String s : taskList) {
             stringBuffer.append(s);
         }
-        Student student = new Student();
-        student.setId(1L);
-        student.setName("Fang Chao");
-        student.setTaskWaiting(stringBuffer.toString());
+        Student student = studentService.getStudent(2L);
+        if (student != null) {
+            student.setTaskWaiting(stringBuffer.toString());
+        }
         return student;
     }
 }
