@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to FC's Website</title>
+</head>
+<body>
+    <div style="margin: auto auto;width: fit-content;height: fit-content">
+        <p th:text="'ID：' + ${student.id}"/>
+        <p th:text="'姓名：' + ${student.name}"/>
+        <p th:text="'待处理任务：' + ${student.taskWaiting}"/>
+        <p th:text="'当前时间：' + ${#dates.format(currentTime, 'yyyy-MM-dd HH:mm:ss')}"/>
+        <div>
+            <img th:src="@{'/nobi.jpg'}"/>
+        </div>
+    </div>
+</body>
+</html>

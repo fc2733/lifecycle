@@ -3,17 +3,19 @@ package demo.fc.lifecycle.controller;
 import demo.fc.lifecycle.entity.Student;
 import demo.fc.lifecycle.service.StudentService;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author chao.fang@hand-china.com
  * @date 2020-04-07 1:17
  */
-@RestController
+@Controller
 @RequestMapping("main")
 public class MainController {
 
@@ -27,9 +29,9 @@ public class MainController {
     }
 
     @GetMapping
-    public Student getInfo() {
+    public String getInfo(Model model) {
         if (!redisTemplate.hasKey("l1")) {
-            redisTemplate.opsForList().rightPushAll("l1", "<1>Open the fridge door.", "<2>Put the elephant in.", "<3>Close the fridge door.");
+            redisTemplate.opsForList().rightPushAll("l1", "<1>把冰箱门儿打开。", "<2>把大象装进去。", "<3>把冰箱门儿带上。");
         } else {
             redisTemplate.opsForList().leftPop("l1");
         }
@@ -38,10 +40,12 @@ public class MainController {
         for (String s : taskList) {
             stringBuffer.append(s);
         }
-        Student student = studentService.getStudent(2L);
+        Student student = studentService.getStudent(1L);
         if (student != null) {
             student.setTaskWaiting(stringBuffer.toString());
         }
-        return student;
+        model.addAttribute("student", student);
+        model.addAttribute("currentTime", new Date());
+        return "main";
     }
 }
