@@ -3,10 +3,12 @@ package demo.fc.lifecycle.controller;
 import demo.fc.lifecycle.entity.Student;
 import demo.fc.lifecycle.service.StudentService;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.List;
@@ -19,11 +21,14 @@ import java.util.List;
 @RequestMapping("main")
 public class MainController {
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
     private final RedisTemplate<String, String> redisTemplate;
     private final StudentService studentService;
 
-    public MainController(RedisTemplate<String, String> redisTemplate,
+    public MainController(KafkaTemplate<String, String> kafkaTemplate,
+                          RedisTemplate<String, String> redisTemplate,
                           StudentService studentService) {
+        this.kafkaTemplate = kafkaTemplate;
         this.redisTemplate = redisTemplate;
         this.studentService = studentService;
     }
@@ -47,5 +52,12 @@ public class MainController {
         model.addAttribute("student", student);
         model.addAttribute("currentTime", new Date());
         return "main";
+    }
+
+    @ResponseBody
+    @GetMapping("/kafka-test")
+    public String kafkaTest(String msg) {
+        kafkaTemplate.send("test-topic", msg);
+        return "ok";
     }
 }
