@@ -13,7 +13,7 @@ public class KafkaMessageHandler {
 
     @KafkaListener(topics = {"test-topic"}, groupId = "kafka-test")
     public void handleKafkaMessage(ConsumerRecord record) {
-        System.out.println(record.value().toString());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>Message Receive: "+record.value().toString());
 
     }
 }
