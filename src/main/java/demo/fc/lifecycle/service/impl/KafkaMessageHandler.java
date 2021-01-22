@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaMessageHandler {
 
-    @KafkaListener(topics = {"test-topic"}, groupId = "kafka-test")
+    //@KafkaListener(topics = {"test-topic"}, groupId = "kafka-test")
     public void handleKafkaMessage(ConsumerRecord record) {
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>Message Receive: "+record.value().toString());
 
